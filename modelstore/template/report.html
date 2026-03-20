@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report</title>
+ <style>
+      .hidden {
+        visibility:  hidden;
+      }
+      .visible {
+        visibility: visible;
+      }
+    </style>
+
+  </head>
+  <body>
+    <form method="post">
+      {% csrf_token %} Enter roll no.
+      <input type="number" name="roll" value="{{roll}}" id="roll" />
+      <input type="submit" value="Search" />
+    </form>
+    <h2>Attendance Report</h2>
+
+    <p>Roll no. : {{ roll }}      {% if error %}
+    <p style="color: red">{{ error }}</p>
+    {% endif %}</p>
+    <p>Name : {{ name }}</p>
+    <p>Total Classes: {{ total }}</p>
+    <p>Present: {{ present }}</p>
+    <p>Absent: {{ absent }}</p>
+    <p>Percentage: {{ percentage }}%</p>
+
+
+    <input type="button"  id="btn" value="Show" onclick="showText()" />
+    <div class="hidden"  id="text">
+      <table border="1">
+        <tr>
+          <th>roll</th>
+          <th>Name</th>
+          <th>Attendance</th>
+          <th>date</th>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+          <td>{{ i.roll }}</td>
+          <td>{{ i.name }}</td>
+          <td>{{ i.attendance }}</td>
+          <td>{{ i.tarikh }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+<script>
+      const pp = document.getElementById("text");
+      const btn=document.getElementById("btn");
+      
+      function showText() {
+        // alert(btn.value)
+        pp.classList.remove("hidden");
+        pp.classList.remove("visible");
+        if(btn.value=="Show")
+      {
+        console.log("hii")
+        pp.classList.add("visible");
+        btn.value="Hide";
+      }
+      else{
+  pp.classList.add("hidden");
+        btn.value="Show";
+      }
+      }
+</script>
+  </body>
+</html>
