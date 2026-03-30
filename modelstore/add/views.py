@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Attend
+# from django.http import  JsonResponse
+from .models import Attend 
 
 def home(request):
     if request.method == "POST":
@@ -72,3 +72,23 @@ def report(request):
 
 def capture(request):
     return render(request,"capture.html")
+    
+def recognize(request):
+    if request.method == "POST":
+        roll = request.POST.get('roll')
+        attend = request.POST.get('attend')
+        date = request.POST.get('date')
+        Attend.objects.create(
+            roll=roll,
+            tarikh=date,
+            attendance=attend
+        )
+        if attend == "Present":
+            print(roll, "Present" , date)
+        elif attend == "Absent":
+            print(roll, "Absent", date)
+
+    return render(request,'recognize.html')    
+
+def test(request):
+    return render (request,'test.html')

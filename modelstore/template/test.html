@@ -1,44 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% load static %}
+<link href="{% static 'styles.css'%}" rel="stylesheet">
+</head>
+<body>
+    <!-- <a href="dologin">Do Login</a> -->
+    <br><br>
+ <h1>Images</h1>
+ 
+<h1>{{image}}</h1>
+<img src="/static/0.jpg"> 
 
-    <style>
-      .hidden {
-        visibility: hidden;
-      }
-      .visible {
-        visibility: visible;
-      }
-    </style>
-  </head>
-
-  <body>
-    <p class="visible" id="text">Hello</p>
-
-    
-    <input id="btn" type="button" value="Hide" onclick="hideText()" />
-
-    <script>
-      const pp = document.getElementById("text");
-      const btn=document.getElementById("btn");
-      
-      function hideText() {
-        
-        pp.classList.remove("hidden");
-        pp.classList.remove("visible");
-        if(btn.value=="Hide")
-      {
-        pp.classList.add("hidden");
-        btn.value="Show";
-      }
-      else{
-  pp.classList.add("visible");
-        btn.value="Hide";
-      }
-      }
-    </script>
-  </body>
+<!-- <a href="protected/">View</a> -->
 </html>

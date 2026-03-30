@@ -7,4 +7,6 @@ urlpatterns = [
     path('filter/',views.filter),
     path('report/',views.report),
     path('capture/',views.capture),
+    path('recognize/',views.recognize),
+    path('test/',views.test),
 ]

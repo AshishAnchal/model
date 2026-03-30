@@ -1,10 +1,15 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Face Recognition (Multi-Image)</title>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8321261883090494"
+      crossorigin="anonymous"
+    ></script>
+
     <meta name="theme-color" content="#f59e0b" />
     <style>
       :root {
@@ -250,6 +255,8 @@
   </head>
 
   <body>
+    {% load static %}
+
     <div class="wrap">
       <div class="top">
         <div class="title">
@@ -303,11 +310,11 @@
             </div>
 
             <div class="field">
-              <label for="detectedNames">Detected name(s)</label>
+              <label for="detectedNames">Detected Roll no.(s)</label>
               <textarea
                 id="detectedNames"
                 class="textbox"
-                placeholder="Recognized names will appear here"
+                placeholder="Recognized Roll no.(s) will appear here"
               ></textarea>
             </div>
 
@@ -315,7 +322,8 @@
               If you see rectangles but all labels are <b>Unknown</b>, it means
               training images didn’t load / no face found in them. Use
               <b>Reload Training</b> after fixing
-              <code>data/faces.json</code> and <code>images/faces/</code>.
+              <code>static/data/faces.json</code> and
+              <code>static/images/faces/</code>.
             </div>
           </div>
         </div>
@@ -340,11 +348,19 @@
       </div>
     </div>
 
+    <form method="post">
+      {% csrf_token %} Roll no.
+      <input type="" name="roll" id="rollInput" /><br /><br />
+      <input type="date" name="date" /><br /><br />
+      <input type="submit" value="Present" name="attend" />
+      <input type="submit" value="Absent" name="attend" /><br /><br />
+    </form>
+
     <script>
       (() => {
         const MODEL_URL =
           "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/model/";
-        const FACES_JSON = "data/faces.json";
+        const FACES_JSON = "/static/data/faces.json";
 
         const $ = (id) => document.getElementById(id);
 
@@ -368,6 +384,7 @@
         const peopleEl = $("people");
         const logsEl = $("logs");
         const detectedNamesEl = $("detectedNames");
+        const rollInput = $("rollInput");
 
         let stream = null;
         let running = false;
@@ -546,8 +563,8 @@
 
         async function startCamera() {
           if (running) return;
-             facesEl.textContent = "0";
-         detectedNamesEl.value = "";
+          facesEl.textContent = "0";
+          detectedNamesEl.value = "";
           setStatus("Requesting camera…");
           try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -595,8 +612,8 @@
           btnStopCam.disabled = true;
           btnSwitch.disabled = true;
 
-         // facesEl.textContent = "0";
-         // detectedNamesEl.value = "";
+          // facesEl.textContent = "0";
+          // detectedNamesEl.value = "";
           setStatus("Stopped");
           log("Camera stopped.");
         }
@@ -685,6 +702,7 @@
               if (!detectedNames.includes(detectedName)) {
                 detectedNames.push(detectedName);
               }
+              console.log(detectedName);
             }
 
             ctx.font = "14px system-ui";
@@ -698,7 +716,13 @@
             ctx.fillText(label, b.x + pad, y + 15);
           }
 
-          detectedNamesEl.value = detectedNames.join("\n");
+          const namesText = detectedNames.join("\n");
+          detectedNamesEl.value = namesText;
+
+        
+          if (detectedNames.length > 0) {
+            rollInput.value = detectedNames[0];
+          }
         }
 
         async function loop() {

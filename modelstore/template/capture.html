@@ -1,9 +1,16 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Face Capture (Multi-Image)</title>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8321261883090494"
+      crossorigin="anonymous"
+    ></script>
+
     <meta name="theme-color" content="#f59e0b" />
     <style>
       :root {
@@ -171,7 +178,7 @@
       <div class="card">
         <div class="card-h">
           <div class="row">
-            <input id="name" placeholder="Person name (e.g., Champak)" />
+            <input id="name" placeholder="Enter Roll no." />
             <select id="pad" title="Padding around face">
               <option value="0.10">Pad 10%</option>
               <option value="0.20" selected>Pad 20%</option>
@@ -215,7 +222,7 @@
 
           <div class="note">
             Workflow: Save 3–5 images per person → upload images into
-            <b>/images/faces/</b> → upload JSON into <b>/data/faces.json</b>.
+            <b>static/images/faces/</b> → upload JSON into <b>static/data/faces.json</b>.
           </div>
 
           <div id="gallery" class="grid"></div>
@@ -451,7 +458,7 @@
 
         function saveFace() {
           const name = (nameEl.value || "").trim();
-          if (!name) return alert("Enter a name first.");
+          if (!name) return alert("Enter a roll no. first.");
           if (!lastBox)
             return alert("No face detected yet. Wait for the red box.");
 
@@ -506,7 +513,7 @@
           for (const item of db) {
             const key = item.name.trim();
             if (!map.has(key)) map.set(key, []);
-            map.get(key).push(`images/faces/${item.file}`);
+            map.get(key).push(`/static/images/faces/${item.file}`);
           }
           const out = Array.from(map.entries()).map(([name, files]) => ({
             name,
