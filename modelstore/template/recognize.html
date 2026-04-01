@@ -353,11 +353,7 @@
       <input type="" name="roll" id="rollInput" /><br /><br />
       <input type="date" name="date" /><br /><br />
       <button type="button" onclick="getLocation()">Get Location</button
-      ><br /><br /><input
-        type="hidden"
-        name="latitude"
-        id="latitude"
-      />
+      ><br /><br /><input type="hidden" name="latitude" id="latitude" />
       <input type="hidden" name="longitude" id="longitude" />
       <input type="submit" value="Present" name="attend" />
       <input type="submit" value="Absent" name="attend" /><br /><br />
@@ -802,5 +798,10 @@
         );
       };
     </script>
+    {% if msg %}
+    <script>
+      alert("{{ msg }}");
+    </script>
+    {% endif %}
   </body>
 </html>

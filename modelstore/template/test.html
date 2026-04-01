@@ -1,33 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Entry sheet</title>
+  </head>
+  <body>
+    <form method="POST">
+      {% csrf_token %} Enter roll no.
+      <input type="number" name="roll" /><br /><br />
 
-<script>
- 
- const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
+      Enter Name
+      <input type="text" name="name" /><br /><br />
+      Class Name
+      <input type="text" name="classname" /><br /><br />
 
-        console.log("Location mil gayi:", lat, lng);
-        // alert(`Latitude: ${lat}, Longitude: ${lng}`);
-      },
-      (error) => {
-        alert("Location permission denied");
-        console.error(error);
-      }
-    );
-  }
-</script>
+      <input type="submit" value="Submit" />
+    </form>
+    {% if msg %}
+    <script>
+      alert("{{ msg }}");
+    </script>
+    {% endif %}
 
-<div>
-  <button onclick="getLocation()">Get Location</button>
-</div>
+    <input type="button"  id="btn" value="Show" />
+    <div class=""  id="text">
+      <table border="1">
+        <tr>
+          <th>roll</th>
+          <th>Attendance</th>
+          <th>date</th>
+        </tr>
 
-</body>
+        {% for i in data %}
+        <tr>
+          <td>{{ i.roll }}</td>
+          <td>{{ i.attendance }}</td>
+          <td>{{ i.tarikh }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
 </html>

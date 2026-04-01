@@ -10,3 +10,10 @@ class Attend(models.Model):
     def __str__(self):
         return self.attendance
     
+class Entry(models.Model):
+    roll = models.IntegerField()
+    name = models.CharField(max_length=100)
+    classname = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.roll} - {self.name} - {self.classname}"    

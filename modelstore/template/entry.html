@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendance List</title>
+</head>
+
+<body>
+
+<h2>Entry Record</h2>
+
+<table border="1">
+<tr>
+<th>roll</th>
+<th>Name</th>
+<th>Class Name</th>
+</tr>
+
+{% for i in data %}
+<tr>
+<td>{{ i.roll }}</td>
+<td>{{ i.name }}</td>
+<td>{{ i.classname }}</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from django.http import  JsonResponse
-from .models import Attend 
+from .models import Attend , Entry
 
 def home(request):
     if request.method == "POST":
@@ -73,6 +73,8 @@ def capture(request):
     return render(request,"capture.html")
     
 def recognize(request):
+    msg = ""
+
     if request.method == "POST":
         roll = request.POST.get("roll")
         attendance = request.POST.get("attend")
@@ -80,14 +82,34 @@ def recognize(request):
         lat = request.POST.get("latitude")
         lng = request.POST.get("longitude")
 
-        Attend.objects.create(
-            roll=roll,
-            attendance=attendance,
-            tarikh=date,
-            latitude=lat if lat else None,
-            longitude=lng if lng else None
-        )
-    return render(request,'recognize.html')    
+        # ✅ Check duplicate
+        if Attend.objects.filter(roll=roll, tarikh=date).exists():
+            msg = "Attendance already marked ❌"
+        else:
+            Attend.objects.create(
+                roll=roll,
+                attendance=attendance,
+                tarikh=date,
+                latitude=lat if lat else None,
+                longitude=lng if lng else None
+            )
+            msg = "Attendance marked successfully ✅"
+
+    return render(request, 'recognize.html', {"msg": msg})   
 
 def test(request):
-    return render (request,'test.html')
+    msg = ""
+
+    if request.method == "POST":
+        roll = request.POST.get("roll")
+        name = request.POST.get("name")
+        classname = request.POST.get("classname")
+        # Save data
+        Entry.objects.create(roll=roll, name=name , classname=classname)
+        msg = "Entry saved successfully ✅"
+
+    return render(request, "test.html", {"msg": msg})
+
+def entry(request):
+    data = Entry.objects.all()
+    return render(request, "entry.html",{"data": data})
