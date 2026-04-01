@@ -27,10 +27,10 @@ def show(request):
 
 def filter(request):
     if request.method == 'POST':
-        roll = request.POST.get('roll')
+        attendance = request.POST.get('attend')
         
 
-        data = Attend.objects.filter(roll=roll)
+        data = Attend.objects.filter(attendance=attendance)
         return render(request, "show.html", {'data': data})
 
     return render(request, "filter.html")
@@ -44,13 +44,13 @@ def report(request):
 
         records = Attend.objects.filter(roll=roll)
 
-        if records.exists():   # ✅ check if data exists
+        if records.exists(): 
             total = records.count()
             present = records.filter(attendance="Present").count()
             absent = records.filter(attendance="Absent").count()
 
             student = records.first()
-            name = student.name if student else "N/A"
+            # name = student.name if student else "N/A"
 
             percentage = (present / total) * 100 if total > 0 else 0
 
@@ -60,7 +60,6 @@ def report(request):
                 'absent': absent,
                 'percentage': round(percentage, 2),
                 'roll': roll,
-                'name': name,
                 'data': records
             })
         else:
@@ -75,19 +74,19 @@ def capture(request):
     
 def recognize(request):
     if request.method == "POST":
-        roll = request.POST.get('roll')
-        attend = request.POST.get('attend')
-        date = request.POST.get('date')
+        roll = request.POST.get("roll")
+        attendance = request.POST.get("attend")
+        date = request.POST.get("date")
+        lat = request.POST.get("latitude")
+        lng = request.POST.get("longitude")
+
         Attend.objects.create(
             roll=roll,
+            attendance=attendance,
             tarikh=date,
-            attendance=attend
+            latitude=lat if lat else None,
+            longitude=lng if lng else None
         )
-        if attend == "Present":
-            print(roll, "Present" , date)
-        elif attend == "Absent":
-            print(roll, "Absent", date)
-
     return render(request,'recognize.html')    
 
 def test(request):

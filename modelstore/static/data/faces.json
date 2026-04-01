@@ -40,5 +40,21 @@
       "/static/images/faces/01-1774868615570.jpg",
       "/static/images/faces/01-1774868616586.jpg"
     ]
+  },
+    {
+    "name": "123",
+    "files": [
+      "/static/images/faces/123-1774874956456.jpg",
+      "/static/images/faces/123-1774874958741.jpg",
+      "/static/images/faces/123-1774874976005.jpg",
+      "/static/images/faces/123-1774874979240.jpg",
+      "/static/images/faces/123-1774874981029.jpg",
+      "/static/images/faces/123-1774874983015.jpg",
+      "/static/images/faces/123-1774874987591.jpg",
+      "/static/images/faces/123-1774874988493.jpg",
+      "/static/images/faces/123-1774874989325.jpg",
+      "/static/images/faces/123-1774874993178.jpg",
+      "/static/images/faces/123-1774874994403.jpg"
+    ]
   }
 ]

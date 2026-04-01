@@ -25,7 +25,6 @@
     <p>Roll no. : {{ roll }}      {% if error %}
     <p style="color: red">{{ error }}</p>
     {% endif %}</p>
-    <p>Name : {{ name }}</p>
     <p>Total Classes: {{ total }}</p>
     <p>Present: {{ present }}</p>
     <p>Absent: {{ absent }}</p>
@@ -37,7 +36,6 @@
       <table border="1">
         <tr>
           <th>roll</th>
-          <th>Name</th>
           <th>Attendance</th>
           <th>date</th>
         </tr>
@@ -45,7 +43,6 @@
         {% for i in data %}
         <tr>
           <td>{{ i.roll }}</td>
-          <td>{{ i.name }}</td>
           <td>{{ i.attendance }}</td>
           <td>{{ i.tarikh }}</td>
         </tr>

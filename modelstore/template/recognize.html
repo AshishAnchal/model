@@ -352,6 +352,13 @@
       {% csrf_token %} Roll no.
       <input type="" name="roll" id="rollInput" /><br /><br />
       <input type="date" name="date" /><br /><br />
+      <button type="button" onclick="getLocation()">Get Location</button
+      ><br /><br /><input
+        type="hidden"
+        name="latitude"
+        id="latitude"
+      />
+      <input type="hidden" name="longitude" id="longitude" />
       <input type="submit" value="Present" name="attend" />
       <input type="submit" value="Absent" name="attend" /><br /><br />
     </form>
@@ -719,7 +726,6 @@
           const namesText = detectedNames.join("\n");
           detectedNamesEl.value = namesText;
 
-        
           if (detectedNames.length > 0) {
             rollInput.value = detectedNames[0];
           }
@@ -778,6 +784,23 @@
           }
         })();
       })();
+      const getLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            document.getElementById("latitude").value = lat;
+            document.getElementById("longitude").value = lng;
+
+            console.log("Location:", lat, lng);
+          },
+          (error) => {
+            alert("Location permission denied");
+            console.error(error);
+          },
+        );
+      };
     </script>
   </body>
 </html>

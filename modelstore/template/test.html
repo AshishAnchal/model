@@ -3,16 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    {% load static %}
-<link href="{% static 'styles.css'%}" rel="stylesheet">
 </head>
 <body>
-    <!-- <a href="dologin">Do Login</a> -->
-    <br><br>
- <h1>Images</h1>
- 
-<h1>{{image}}</h1>
-<img src="/static/0.jpg"> 
 
-<!-- <a href="protected/">View</a> -->
+<script>
+ 
+ const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        console.log("Location mil gayi:", lat, lng);
+        // alert(`Latitude: ${lat}, Longitude: ${lng}`);
+      },
+      (error) => {
+        alert("Location permission denied");
+        console.error(error);
+      }
+    );
+  }
+</script>
+
+<div>
+  <button onclick="getLocation()">Get Location</button>
+</div>
+
+</body>
 </html>
