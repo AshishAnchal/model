@@ -9,5 +9,8 @@ urlpatterns = [
     path('capture/',views.capture),
     path('recognize/',views.recognize),
     path('test/',views.test),
-    path('entry/',views.entry),
+    # path('entry/',views.entry),
+    path('entryfilter/',views.entryfilter),
+    path('query/',views.query),
+    path('transfer_data/',views.transfer_data),
 ]

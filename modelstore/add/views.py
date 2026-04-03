@@ -1,6 +1,7 @@
 from django.shortcuts import render
 # from django.http import  JsonResponse
 from .models import Attend , Entry
+from datetime import date
 
 def home(request):
     if request.method == "POST":
@@ -75,27 +76,35 @@ def capture(request):
 def recognize(request):
     msg = ""
 
+    today = date.today()
+    entries = Entry.objects.all()
+
+    for e in entries:
+        if not Attend.objects.filter(roll=e.roll, tarikh=today).exists():
+            Attend.objects.create(
+                roll=e.roll,
+                classname=e.classname,
+                tarikh=today,
+                attendance="Absent"
+            )
+
     if request.method == "POST":
         roll = request.POST.get("roll")
         attendance = request.POST.get("attend")
-        date = request.POST.get("date")
         lat = request.POST.get("latitude")
         lng = request.POST.get("longitude")
 
-        # ✅ Check duplicate
-        if Attend.objects.filter(roll=roll, tarikh=date).exists():
-            msg = "Attendance already marked ❌"
-        else:
-            Attend.objects.create(
-                roll=roll,
+        if Attend.objects.filter(roll=roll, tarikh=today).exists():
+            Attend.objects.filter(roll=roll, tarikh=today).update(
                 attendance=attendance,
-                tarikh=date,
                 latitude=lat if lat else None,
                 longitude=lng if lng else None
             )
-            msg = "Attendance marked successfully ✅"
+            msg = "Attendance updated (Present)"
+        else:
+            msg = "Error: Student not found"
 
-    return render(request, 'recognize.html', {"msg": msg})   
+    return render(request, 'recognize.html', {"msg": msg})
 
 def test(request):
     msg = ""
@@ -104,12 +113,37 @@ def test(request):
         roll = request.POST.get("roll")
         name = request.POST.get("name")
         classname = request.POST.get("classname")
-        # Save data
         Entry.objects.create(roll=roll, name=name , classname=classname)
         msg = "Entry saved successfully ✅"
 
     return render(request, "test.html", {"msg": msg})
 
-def entry(request):
+def transfer_data(request):
+    today = date.today()
+    entries = Entry.objects.all()
+
+    for e in entries:
+        if not Attend.objects.filter(roll=e.roll, classname=e.classname).exists():
+            Attend.objects.create(
+                roll=e.roll,
+                classname=e.classname,
+                tarikh=today,
+                attendance="Absent"
+            )
+
+    return render(request, "entry.html", {"data": entries,"aajkadate":today,"attendance":"Absent"})
+
+def entryfilter(request):
+     if request.method == 'POST':
+        classname = request.POST.get('classname')
+        
+
+        data = Entry.objects.filter(classname=classname)
+        return render(request, "entry.html", {'data': data})
+
+     return render(request,'entryfilter.html')
+ 
+def query(request):
     data = Entry.objects.all()
-    return render(request, "entry.html",{"data": data})
+    
+    return render(request, "query_selector.html",{"data": data}) 

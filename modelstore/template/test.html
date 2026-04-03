@@ -21,24 +21,5 @@
       alert("{{ msg }}");
     </script>
     {% endif %}
-
-    <input type="button"  id="btn" value="Show" />
-    <div class=""  id="text">
-      <table border="1">
-        <tr>
-          <th>roll</th>
-          <th>Attendance</th>
-          <th>date</th>
-        </tr>
-
-        {% for i in data %}
-        <tr>
-          <td>{{ i.roll }}</td>
-          <td>{{ i.attendance }}</td>
-          <td>{{ i.tarikh }}</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
   </body>
 </html>
