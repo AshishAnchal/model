@@ -146,3 +146,7 @@ def query(request):
     data = Entry.objects.all()
     
     return render(request, "query_selector.html",{"data": data}) 
+
+
+def index(request):
+    return render(request,"index.html")

@@ -13,4 +13,5 @@ urlpatterns = [
     path('entryfilter/',views.entryfilter),
     path('query/',views.query),
     path('transfer_data/',views.transfer_data),
+    path('index/',views.index),
 ]
