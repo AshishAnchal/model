@@ -4,23 +4,22 @@ from .models import Attend , Entry
 from datetime import date
 
 def home(request):
-    if request.method == "POST":
-        roll = request.POST.get('roll')
-        attend = request.POST.get('attend')
-        date = request.POST.get('date')
-        name = request.POST.get('name')
-        Attend.objects.create(
-            name=name,
-            roll=roll,
-            tarikh=date,
-            attendance=attend
-        )
-        if attend == "Present":
-            print(name ,roll, "Present" , date)
-        elif attend == "Absent":
-            print(name,roll, "Absent", date)
+    today = date.today()
 
-    return render(request, "home.html")
+    total_students = Entry.objects.count()
+    total_today = Attend.objects.filter(tarikh=today).count()
+    present_today = Attend.objects.filter(tarikh=today, attendance="Present").count()
+    absent_today = Attend.objects.filter(tarikh=today, attendance="Absent").count()
+
+    context = {
+        "total_students": total_students,
+        "total_today": total_today,
+        "present_today": present_today,
+        "absent_today": absent_today,
+        "today": today
+    }
+
+    return render(request, "home.html", context)
 
 def show(request):
     data = Attend.objects.all()

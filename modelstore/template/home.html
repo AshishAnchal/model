@@ -2,18 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance</title>
+    <title>Attendance Dashboard</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .date {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .summary div {
+            background: #f8f9fc;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .summary div span {
+            display: block;
+            font-size: 20px;
+            color: #007bff;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .actions a {
+            text-decoration: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #007bff;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .summary, .actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <form method="post">
-         {% csrf_token %}
-        Name <input type="text" name="name"><br><br>
-        Roll no.  <input type="number" name="roll" ><br><br>
-        <input type="date" name="date"><br><br>
-        <input type="submit" value="Present" name="attend" > 
-        <input type="submit" value="Absent" name="attend" ><br><br>
-        
-    </form>
+
+<div class="container">
+
+    <h1>📊 Attendance Dashboard</h1>
+    <p class="date">Date: {{ today }}</p>
+
+    <div class="card">
+        <h2>Summary</h2>
+        <div class="summary">
+            <div>Total Students <span>{{ total_students }}</span></div>
+            <div>Marked Today <span>{{ total_today }}</span></div>
+            <div>Present <span>{{ present_today }}</span></div>
+            <div>Absent <span>{{ absent_today }}</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Actions</h2>
+        <div class="actions">
+
+            <a href="/test/">
+                <button class="btn">➕ Register Student</button>
+            </a>
+
+            <a href="/capture/">
+                <button class="btn">📷 Capture Face</button>
+            </a>
+
+            <a href="/recognize/">
+                <button class="btn">✅ Mark Attendance</button>
+            </a>
+
+            <a href="/show/">
+                <button class="btn">📋 View Attendance</button>
+            </a>
+
+            <a href="/filter/">
+                <button class="btn">🔍 Filter Attendance</button>
+            </a>
+
+            <a href="/report/">
+                <button class="btn">📊 Student Report</button>
+            </a>
+
+            <a href="/entryfilter/">
+                <button class="btn">🏫 Filter by Class</button>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

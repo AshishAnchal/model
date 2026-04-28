@@ -5,23 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuerySelector</title>
   </head>
+  <style>
+    th.sortable {
+      cursor: pointer;
+    }
+    th.sorted-asc::after {
+      content: " ↑";
+    }
+    th.sorted-desc::after {
+      content: " ↓";
+    }
+    mark {
+      background: yellow;
+    }
+  </style>
   <body>
-    Enter to search <input type="" id="select" />
+    Enter to search
+    <input type="text" id="searchInput" />
+    <button id="clearBtn">Clear</button>
+    <div id="count"></div>
 
-    <table border="1">
-      <tr>
-        <th>roll</th>
-        <th>Name</th>
-        <th>Class Name</th>
-      </tr>
+    <table border="1" id="myTable">
+      <thead>
+        <tr>
+          <th class="sortable" data-col="0">roll</th>
+          <th class="sortable" data-col="1">Date</th>
+          <th class="sortable" data-col="2">Class Name</th>
+          <th class="sortable" data-col="3">Attendance</th>
+        </tr>
+      </thead>
 
-      {% for i in data %}
-      <tr>
-        <td>{{ i.roll }}</td>
-        <td>{{ i.name }}</td>
-        <td>{{ i.classname }}</td>
-      </tr>
-      {% endfor %}
+      <tbody>
+        {% for i in data %}
+        <tr>
+          <td>{{ i.roll }}</td>
+          <td>{{ i.tarikh }}</td>
+          <td>{{ i.classname }}</td>
+          <td>{{ i.attendance }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const table = document.getElementById("myTable");
+        const tbody = table.querySelector("tbody");
+        const searchInput = document.getElementById("searchInput");
+        const clearBtn = document.getElementById("clearBtn");
+        const countDiv = document.getElementById("count");
+        const headers = table.querySelectorAll("th.sortable");
+
+        let sortState = {
+          column: -1,
+          direction: "asc",
+        };
+
+        function escapeRegExp(text) {
+          return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        function removeHighlights(td) {
+          td.innerHTML = td.textContent;
+        }
+
+        function highlightCell(td, keyword) {
+          if (!keyword) return;
+          const safeKeyword = escapeRegExp(keyword);
+          const regex = new RegExp("(" + safeKeyword + ")", "gi");
+          td.innerHTML = td.textContent.replace(regex, "<mark>$1</mark>");
+        }
+
+        function getRows() {
+          return Array.from(tbody.querySelectorAll("tr"));
+        }
+
+        function updateCount() {
+          const visibleRows = getRows().filter(
+            (row) => row.style.display !== "none",
+          ).length;
+          const keyword = searchInput.value.trim();
+
+          if (!keyword) {
+            countDiv.textContent = "Showing all rows";
+          } else {
+            countDiv.textContent =
+              "Showing " + visibleRows + " matching row(s)";
+          }
+        }
+
+        function applySearch() {
+          const keyword = searchInput.value.trim().toLowerCase();
+          const rows = getRows();
+
+          rows.forEach((row) => {
+            const tds = row.querySelectorAll("td");
+            let match = false;
+
+            tds.forEach((td) => {
+              removeHighlights(td);
+
+              const text = td.textContent.toLowerCase();
+              if (keyword && text.includes(keyword)) {
+                match = true;
+                highlightCell(td, keyword);
+              }
+            });
+
+            if (!keyword || match) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+
+          updateCount();
+        }
+
+        function clearSortClasses() {
+          headers.forEach((th) => {
+            th.classList.remove("sorted-asc", "sorted-desc");
+          });
+        }
+
+        function sortTableByColumn(columnIndex) {
+          const rows = getRows();
+          const sameColumn = sortState.column === columnIndex;
+
+          if (sameColumn) {
+            sortState.direction =
+              sortState.direction === "asc" ? "desc" : "asc";
+          } else {
+            sortState.column = columnIndex;
+            sortState.direction = "asc";
+          }
+
+          rows.sort((rowA, rowB) => {
+            const textA = rowA.children[columnIndex].textContent
+              .trim()
+              .toLowerCase();
+            const textB = rowB.children[columnIndex].textContent
+              .trim()
+              .toLowerCase();
+
+            const numA = parseFloat(textA);
+            const numB = parseFloat(textB);
+
+            let comparison = 0;
+
+            if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
+              comparison = numA - numB;
+            } else {
+              comparison = textA.localeCompare(textB);
+            }
+
+            return sortState.direction === "asc" ? comparison : -comparison;
+          });
+
+          rows.forEach((row) => tbody.appendChild(row));
+
+          clearSortClasses();
+
+          const activeHeader = table.querySelector(
+            'th[data-col="' + columnIndex + '"]',
+          );
+          if (activeHeader) {
+            activeHeader.classList.add(
+              sortState.direction === "asc" ? "sorted-asc" : "sorted-desc",
+            );
+          }
+
+          applySearch();
+        }
+
+        searchInput.addEventListener("input", applySearch);
+
+        clearBtn.addEventListener("click", function () {
+          searchInput.value = "";
+          applySearch();
+          searchInput.focus();
+        });
+
+        headers.forEach((th) => {
+          th.addEventListener("click", function () {
+            const colIndex = Number(th.dataset.col);
+            sortTableByColumn(colIndex);
+          });
+        });
+
+        applySearch();
+      })();
+    </script>
   </body>
 </html>
