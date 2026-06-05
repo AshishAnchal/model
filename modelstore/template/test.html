@@ -2,24 +2,114 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Entry sheet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Entry Sheet</title>
+
+    <style>
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body{
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+      }
+
+      .form-container{
+        background: white;
+        padding: 35px;
+        width: 350px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      }
+
+      .form-container h2{
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+      }
+
+      .input-group{
+        margin-bottom: 18px;
+      }
+
+      .input-group label{
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: bold;
+      }
+
+      .input-group input{
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      .input-group input:focus{
+        border-color: #4facfe;
+        box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+      }
+
+      .submit-btn{
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #4facfe;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .submit-btn:hover{
+        background: #008cdd;
+      }
+    </style>
   </head>
+
   <body>
-    <form method="POST">
-      {% csrf_token %} Enter roll no.
-      <input type="number" name="roll" /><br /><br />
 
-      Enter Name
-      <input type="text" name="name" /><br /><br />
-      Class Name
-      <input type="text" name="classname" /><br /><br />
+    <div class="form-container">
+      <h2>Entry Form</h2>
 
-      <input type="submit" value="Submit" />
-    </form>
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+          <label>Enter Roll No.</label>
+          <input type="number" name="roll" placeholder="Enter roll number" required />
+        </div>
+
+        <div class="input-group">
+          <label>Enter Name</label>
+          <input type="text" name="name" placeholder="Enter student name" required />
+        </div>
+
+        <div class="input-group">
+          <label>Class Name</label>
+          <input type="text" name="classname" placeholder="Enter class name" required />
+        </div>
+
+        <input type="submit" value="Submit" class="submit-btn" />
+      </form>
+    </div>
+
     {% if msg %}
     <script>
       alert("{{ msg }}");
     </script>
     {% endif %}
+
   </body>
 </html>

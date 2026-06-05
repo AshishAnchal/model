@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'add',
-    'sslserver',
+    # 'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +126,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = 'static/'
 MEDIA_URL = '/images/'
+
+LOGIN_REDIRECT_URL = '/login/'   # after login, stay on same page
+LOGOUT_REDIRECT_URL = '/login/'  # after logout, come back here

@@ -2,6 +2,8 @@ from django.shortcuts import render
 # from django.http import  JsonResponse
 from .models import Attend , Entry
 from datetime import date
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
     today = date.today()
@@ -71,7 +73,8 @@ def report(request):
 
 def capture(request):
     return render(request,"capture.html")
-    
+
+# @login_required    
 def recognize(request):
     msg = ""
 

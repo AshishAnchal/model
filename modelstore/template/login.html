@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Attendance System</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); width: 320px; }
+        h2 { text-align: center; margin-bottom: 1.5rem; color: #333; }
+        input { width: 100%; padding: 10px; margin: 8px 0 16px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 10px; color: white; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+        .btn-login { background: #4CAF50; }
+        .btn-login:hover { background: #45a049; }
+        .btn-logout { background: #e53935; margin-top: 10px; }
+        .btn-logout:hover { background: #c62828; }
+        .error { color: red; font-size: 0.9rem; margin-bottom: 10px; }
+        .welcome { text-align: center; color: #555; margin-bottom: 1.2rem; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🎓 Attendance System</h2>
+
+        {% if user.is_authenticated %}
+            <!-- LOGGED IN: show logout -->
+            <p class="welcome">Logged in as <strong>{{ user.username }}</strong></p>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
+
+        {% else %}
+            <!-- NOT LOGGED IN: show login form -->
+            {% if form.errors %}
+                <p class="error">❌ Invalid username or password.</p>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <label>Username</label>
+                <input type="text" name="username" autofocus required>
+                <label>Password</label>
+                <input type="password" name="password" required>
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+        {% endif %}
+
+    </div>
+</body>
+</html>
